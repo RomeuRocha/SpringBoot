@@ -7,9 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 import com.romeurocha.springboot.domain.Category;
+import com.romeurocha.springboot.domain.City;
 import com.romeurocha.springboot.domain.Product;
+import com.romeurocha.springboot.domain.State;
 import com.romeurocha.springboot.repositories.CategoryRepository;
+import com.romeurocha.springboot.repositories.CityRepository;
 import com.romeurocha.springboot.repositories.ProductRepository;
+import com.romeurocha.springboot.repositories.StateRepository;
 
 @Configuration
 public class Instantiation implements CommandLineRunner{
@@ -18,6 +22,12 @@ public class Instantiation implements CommandLineRunner{
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private StateRepository stateRepository;
+	
+	@Autowired
+	private CityRepository cityRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -40,6 +50,20 @@ public class Instantiation implements CommandLineRunner{
 		categoryRepository.saveAll(Arrays.asList(cat1,cat2));
 		productRepository.saveAll(Arrays.asList(p1,p2,p3));
 			
+		
+		State sta = new State(null, "Alagoas");
+		State sta2 = new State(null, "Bahia");
+		
+		City cit = new City(null, "Delmiro Gouveia", sta);
+		City cit2 = new City(null, "Paulo Afonso", sta2);
+		City cit3 = new City(null, "Maceió", sta);
+		
+		sta.getCities().addAll(Arrays.asList(cit,cit3));
+		sta2.getCities().add(cit2);
+		
+		stateRepository.saveAll(Arrays.asList(sta,sta2));
+		cityRepository.saveAll(Arrays.asList(cit,cit2,cit3));
+		
 	}
 
 }
