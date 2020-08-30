@@ -6,12 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import com.romeurocha.springboot.domain.Addres;
 import com.romeurocha.springboot.domain.Category;
 import com.romeurocha.springboot.domain.City;
+import com.romeurocha.springboot.domain.Client;
 import com.romeurocha.springboot.domain.Product;
 import com.romeurocha.springboot.domain.State;
+import com.romeurocha.springboot.domain.enuns.TypeClient;
+import com.romeurocha.springboot.repositories.AddresRepository;
 import com.romeurocha.springboot.repositories.CategoryRepository;
 import com.romeurocha.springboot.repositories.CityRepository;
+import com.romeurocha.springboot.repositories.ClientRepository;
 import com.romeurocha.springboot.repositories.ProductRepository;
 import com.romeurocha.springboot.repositories.StateRepository;
 
@@ -28,6 +33,12 @@ public class Instantiation implements CommandLineRunner{
 	
 	@Autowired
 	private CityRepository cityRepository;
+	
+	@Autowired
+	private ClientRepository clientRepository;
+	
+	@Autowired
+	private AddresRepository addresRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -64,6 +75,15 @@ public class Instantiation implements CommandLineRunner{
 		stateRepository.saveAll(Arrays.asList(sta,sta2));
 		cityRepository.saveAll(Arrays.asList(cit,cit2,cit3));
 		
+		Client cli1 = new Client(null, "Romeu Rocha", "romeu@teste.com", "15665478", TypeClient.PERSONPHYSICAL);
+		cli1.getPhones().addAll(Arrays.asList("36412036","981511017"));
+		
+		
+		Addres addres = new Addres(null, "Rua Martins Cavalcantes", "284", null, "Pedra Velha","57480-000", cit, cli1);
+		cli1.getAddres().add(addres);
+		
+		clientRepository.save(cli1);
+		addresRepository.save(addres);
 	}
 
 }
