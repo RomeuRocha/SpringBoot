@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.romeurocha.springboot.domain.Product;
 import com.romeurocha.springboot.repositories.ProductRepository;
+import com.romeurocha.springboot.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ProductService {
@@ -16,7 +17,8 @@ public class ProductService {
 
 	public Product findById(Integer id) {
 		Optional<Product> obj = repository.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Product.class.getName())); 
 	}
 
 }

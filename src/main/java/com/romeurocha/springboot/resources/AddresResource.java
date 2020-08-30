@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.romeurocha.springboot.domain.Category;
-import com.romeurocha.springboot.services.CategoryService;
+import com.romeurocha.springboot.domain.Addres;
+import com.romeurocha.springboot.services.AddresService;
 
 @RestController
-@RequestMapping(value = "/category")
-public class CategoryResource {
+@RequestMapping(value = "/addres")
+public class AddresResource {
 	
 	@Autowired
-	private CategoryService service;
+	private AddresService service;
 	
 	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
-	public ResponseEntity<Category> find(@PathVariable Integer id) {
-		Category obj = service.findById(id);
+	public ResponseEntity<Addres> find(@PathVariable Integer id) {
+		Addres obj = service.findById(id);
 		return ResponseEntity.ok(obj);
 	}
 	
