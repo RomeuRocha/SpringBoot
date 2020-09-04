@@ -13,6 +13,7 @@ import com.romeurocha.springboot.domain.City;
 import com.romeurocha.springboot.domain.Client;
 import com.romeurocha.springboot.domain.CredCard;
 import com.romeurocha.springboot.domain.Order;
+import com.romeurocha.springboot.domain.OrderItem;
 import com.romeurocha.springboot.domain.Payment;
 import com.romeurocha.springboot.domain.Product;
 import com.romeurocha.springboot.domain.State;
@@ -22,6 +23,7 @@ import com.romeurocha.springboot.repositories.AddresRepository;
 import com.romeurocha.springboot.repositories.CategoryRepository;
 import com.romeurocha.springboot.repositories.CityRepository;
 import com.romeurocha.springboot.repositories.ClientRepository;
+import com.romeurocha.springboot.repositories.OrderItemRepository;
 import com.romeurocha.springboot.repositories.OrderRepository;
 import com.romeurocha.springboot.repositories.PaymentRepository;
 import com.romeurocha.springboot.repositories.ProductRepository;
@@ -52,6 +54,9 @@ public class Instantiation implements CommandLineRunner{
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -108,7 +113,12 @@ public class Instantiation implements CommandLineRunner{
 		
 		orderRepository.save(pedido);
 		paymentRepository.save(pagamento);
-		clientRepository.save(cli1);//atualizando os pedidos desse cliente
+		//clientRepository.save(cli1);//atualizando os pedidos desse cliente
+		
+		OrderItem itemPed = new OrderItem(pedido, p1, 0.0, 1, 2000.0);
+		p1.getItems().addAll(Arrays.asList(itemPed));
+		pedido.getItems().addAll(Arrays.asList(itemPed));
+		orderItemRepository.save(itemPed);
 	}
 
 }
