@@ -3,16 +3,18 @@ package com.romeurocha.springboot.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+
+import com.romeurocha.springboot.domain.enuns.StatusPayment;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Payment implements Serializable{
+public abstract class Payment implements Serializable{
 	
 	/**
 	 * 
@@ -20,22 +22,23 @@ public class Payment implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	private Integer statusPayment;
 	
-	@OneToOne(mappedBy = "payment")
+	@OneToOne
+	@JoinColumn(name = "order_id")
+	@MapsId
 	private Order order;
 	
 	public Payment() {
 		
 	}
 
-	public Payment(Integer id, Integer statusPayment, Order order) {
+	public Payment(Integer id, StatusPayment statusPayment, Order order) {
 		super();
 		this.id = id;
-		this.statusPayment = statusPayment;
+		this.statusPayment = statusPayment.getCod();
 		this.order = order;
 	}
 
@@ -47,12 +50,12 @@ public class Payment implements Serializable{
 		this.id = id;
 	}
 
-	public Integer getStatusPayment() {
-		return statusPayment;
+	public StatusPayment getStatusPayment() {
+		return StatusPayment.toEnum(this.statusPayment);
 	}
 
-	public void setStatusPayment(Integer statusPayment) {
-		this.statusPayment = statusPayment;
+	public void setStatusPayment(StatusPayment statusPayment) {
+		this.statusPayment = statusPayment.getCod();
 	}
 
 	public Order getOrder() {

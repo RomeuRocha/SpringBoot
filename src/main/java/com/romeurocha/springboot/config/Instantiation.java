@@ -1,5 +1,6 @@
 package com.romeurocha.springboot.config;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,19 @@ import com.romeurocha.springboot.domain.Addres;
 import com.romeurocha.springboot.domain.Category;
 import com.romeurocha.springboot.domain.City;
 import com.romeurocha.springboot.domain.Client;
+import com.romeurocha.springboot.domain.CredCard;
+import com.romeurocha.springboot.domain.Order;
+import com.romeurocha.springboot.domain.Payment;
 import com.romeurocha.springboot.domain.Product;
 import com.romeurocha.springboot.domain.State;
+import com.romeurocha.springboot.domain.enuns.StatusPayment;
 import com.romeurocha.springboot.domain.enuns.TypeClient;
 import com.romeurocha.springboot.repositories.AddresRepository;
 import com.romeurocha.springboot.repositories.CategoryRepository;
 import com.romeurocha.springboot.repositories.CityRepository;
 import com.romeurocha.springboot.repositories.ClientRepository;
+import com.romeurocha.springboot.repositories.OrderRepository;
+import com.romeurocha.springboot.repositories.PaymentRepository;
 import com.romeurocha.springboot.repositories.ProductRepository;
 import com.romeurocha.springboot.repositories.StateRepository;
 
@@ -39,6 +46,12 @@ public class Instantiation implements CommandLineRunner{
 	
 	@Autowired
 	private AddresRepository addresRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	@Autowired
+	private PaymentRepository paymentRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -84,6 +97,18 @@ public class Instantiation implements CommandLineRunner{
 		
 		clientRepository.save(cli1);
 		addresRepository.save(addres);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Order pedido = new Order(null, sdf.parse("04/09/2020 17:22"),  cli1, addres);
+		Payment pagamento = new CredCard(null, StatusPayment.SETTLED, pedido, 3);
+		
+		pedido.setPayment(pagamento);
+		cli1.getOrders().addAll(Arrays.asList(pedido));
+		
+		orderRepository.save(pedido);
+		paymentRepository.save(pagamento);
+		clientRepository.save(cli1);//atualizando os pedidos desse cliente
 	}
 
 }

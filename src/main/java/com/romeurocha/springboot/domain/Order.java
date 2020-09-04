@@ -3,6 +3,7 @@ package com.romeurocha.springboot.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,15 +27,14 @@ public class Order implements Serializable{
 	
 	private Date moment;
 	
-	@OneToOne
-	@JoinColumn(name = "payment_id")
+	@OneToOne(cascade = CascadeType.ALL,mappedBy = "order")
 	private Payment payment;
 	
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private Client client;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="addres_id")
 	private Addres deliveryAddress;
 
@@ -42,11 +42,11 @@ public class Order implements Serializable{
 		
 	}
 	
-	public Order(Integer id, Date moment, Payment payment, Client client) {
+	public Order(Integer id, Date moment, Client client,Addres deliveryAddress) {
 		this.id = id;
-		this.moment = moment;
-		this.payment = payment;
+		this.moment = moment;	
 		this.client = client;
+		this.deliveryAddress = deliveryAddress;
 	}
 
 	public Integer getId() {
