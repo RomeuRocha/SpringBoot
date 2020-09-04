@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.romeurocha.springboot.domain.Addres;
-import com.romeurocha.springboot.services.AddresService;
+import com.romeurocha.springboot.domain.Order;
+import com.romeurocha.springboot.services.OrderService;
 
 @RestController
-@RequestMapping(value = "/addres")
-public class AddresResource {
+@RequestMapping(value = "/order")
+public class OrderResource {
 	
 	@Autowired
-	private AddresService service;
+	private OrderService service;
 	
 	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
-	public ResponseEntity<Addres> find(@PathVariable Integer id) {
-		Addres obj = service.findById(id);
+	public ResponseEntity<Order> find(@PathVariable Integer id) {
+		Order obj = service.findById(id);
 		return ResponseEntity.ok(obj);
 	}
 	

@@ -41,6 +41,7 @@ public class Product implements Serializable{
 			)
 	private List<Category> categories = new ArrayList<>();
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
 	private Set<OrderItem> items = new HashSet<>();
 	
@@ -55,6 +56,7 @@ public class Product implements Serializable{
 		this.price = price;
 	}
 	
+	@JsonIgnore
 	public List<Order> getOrders(){
 		List<Order> listOrders = new ArrayList<>();
 		for(OrderItem item : items) {

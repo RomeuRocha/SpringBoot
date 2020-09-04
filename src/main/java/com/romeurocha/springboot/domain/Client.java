@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.romeurocha.springboot.domain.enuns.TypeClient;
 
 @Entity
@@ -43,6 +44,7 @@ public class Client implements Serializable{
 	@CollectionTable(name ="phones")
 	private Set<String> phones = new HashSet<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
 	
